@@ -1,0 +1,37 @@
+*paper-platinum.txt*  Warm paper and Platinum UI for Neovim 0.11+
+
+SETUP                                                *paper-platinum-setup*
+>lua
+  require('paper-platinum').setup({ style = 'light', transparent = false })
+  vim.cmd.colorscheme('paper-platinum')
+<
+setup() saves options; :colorscheme loads and fires ColorScheme. Each setup()
+merges with defaults rather than the previous configuration. Default: dark.
+
+Options: style (light/dark), transparent, vivid, terminal_colors; ui.relief
+(flat/subtle/classic), ui.contrast (normal/high), ui.borders,
+ui.float_style (platinum/plain); styles.comments/keywords/functions/variables;
+integrations (see README); on_colors and on_highlights callbacks.
+
+vivid=true uses bright red/yellow for errors and warnings, including virtual
+text/lines. Light uses deeper saturated accents, Dark uses bright accents.
+Both meet 4.5:1 on solid editor/float/cursorline surfaces. Default false;
+independent of transparent and ui.contrast. Wallpaper contrast is not assured.
+
+API                                                    *paper-platinum-api*
+require('paper-platinum').load(opts) loads immediately without ColorScheme event.
+.colors() returns a fresh semantic palette.
+.highlights() returns highlight table, colors, options without applying them.
+.border() returns an eight-part border with highlight names, or 'none'. Pass to
+vim.lsp.buf.hover(), vim.lsp.buf.signature_help(), or a supported window API.
+
+TRANSPARENCY                                  *paper-platinum-transparency*
+transparent=true clears editor, float, sidebar, and popup menu backgrounds.
+It also accepts {editor, floats, sidebars, popups} booleans; omitted fields
+remain opaque. Kitty opacity, winblend, and pumblend are independent.
+Contrast depends on the composited background. No true per-line alpha.
+
+See README.md, doc/DESIGN.md, doc/SOURCES.md and doc/TESTING.md in the repository
+for configuration, provenance, measured contrast and verification scope.
+
+ vim:tw=78:ts=8:noet:ft=help:norl:

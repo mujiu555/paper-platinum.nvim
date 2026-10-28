@@ -1,0 +1,92 @@
+return function()
+  local h = {
+    ["@markup.strong"] = { bold = true }, ["@markup.italic"] = { italic = true },
+    ["@markup.strikethrough"] = { strikethrough = true }, ["@markup.underline"] = { underline = true },
+    ["@string.regexp"] = { link = "Special" }, ["@spell"] = {}, ["@nospell"] = {}, ["@conceal"] = { link = "Conceal" },
+  }
+  h["@variable"] = { link = "Identifier" }
+  h["@variable.parameter"] = { link = "PaperParameter" }
+  h["@variable.parameter.builtin"] = { link = "PaperParameter" }
+  h["@variable.member"] = { link = "PaperProperty" }
+  h["@property"] = { link = "PaperProperty" }
+  h["@variable.builtin"] = { link = "Special" }
+  h["@attribute"] = { link = "Special" }
+  h["@attribute.builtin"] = { link = "Special" }
+  h["@character.special"] = { link = "Special" }
+  h["@punctuation.special"] = { link = "Special" }
+  h["@tag.attribute"] = { link = "Special" }
+  h["@markup.list"] = { link = "Special" }
+  h["@constant"] = { link = "Constant" }
+  h["@constant.builtin"] = { link = "Constant" }
+  h["@markup.math"] = { link = "Constant" }
+  h["@constant.macro"] = { link = "Macro" }
+  h["@function.macro"] = { link = "Macro" }
+  h["@module"] = { link = "PaperNamespace" }
+  h["@module.builtin"] = { link = "PaperNamespace" }
+  h["@string"] = { link = "String" }
+  h["@character"] = { link = "String" }
+  h["@markup.raw"] = { link = "String" }
+  h["@markup.raw.block"] = { link = "String" }
+  h["@string.documentation"] = { link = "Comment" }
+  h["@comment"] = { link = "Comment" }
+  h["@comment.documentation"] = { link = "Comment" }
+  h["@markup.quote"] = { link = "Comment" }
+  h["@string.special.url"] = { link = "Underlined" }
+  h["@markup.link"] = { link = "Underlined" }
+  h["@markup.link.label"] = { link = "Underlined" }
+  h["@markup.link.url"] = { link = "Underlined" }
+  h["@string.escape"] = { link = "SpecialChar" }
+  h["@string.special"] = { link = "SpecialChar" }
+  h["@string.special.symbol"] = { link = "SpecialChar" }
+  h["@string.special.path"] = { link = "SpecialChar" }
+  h["@number"] = { link = "Number" }
+  h["@number.float"] = { link = "Number" }
+  h["@boolean"] = { link = "Boolean" }
+  h["@type"] = { link = "Type" }
+  h["@type.builtin"] = { link = "Type" }
+  h["@type.definition"] = { link = "Type" }
+  h["@constructor"] = { link = "Type" }
+  h["@tag"] = { link = "Type" }
+  h["@function"] = { link = "Function" }
+  h["@function.builtin"] = { link = "Function" }
+  h["@function.call"] = { link = "Function" }
+  h["@function.method"] = { link = "PaperMethod" }
+  h["@function.method.call"] = { link = "PaperMethod" }
+  h["@keyword"] = { link = "Keyword" }
+  h["@keyword.coroutine"] = { link = "Keyword" }
+  h["@keyword.function"] = { link = "Keyword" }
+  h["@keyword.operator"] = { link = "Keyword" }
+  h["@keyword.type"] = { link = "Keyword" }
+  h["@keyword.modifier"] = { link = "Keyword" }
+  h["@keyword.repeat"] = { link = "Keyword" }
+  h["@keyword.return"] = { link = "Keyword" }
+  h["@keyword.debug"] = { link = "Keyword" }
+  h["@keyword.exception"] = { link = "Keyword" }
+  h["@keyword.conditional"] = { link = "Keyword" }
+  h["@keyword.conditional.ternary"] = { link = "Keyword" }
+  h["@label"] = { link = "Keyword" }
+  h["@keyword.import"] = { link = "PreProc" }
+  h["@keyword.directive"] = { link = "PreProc" }
+  h["@keyword.directive.define"] = { link = "PreProc" }
+  h["@operator"] = { link = "Operator" }
+  h["@punctuation.delimiter"] = { link = "Delimiter" }
+  h["@punctuation.bracket"] = { link = "Delimiter" }
+  h["@tag.delimiter"] = { link = "Delimiter" }
+  h["@comment.todo"] = { link = "Todo" }
+  h["@markup.list.unchecked"] = { link = "Todo" }
+  h["@comment.error"] = { link = "DiagnosticError" }
+  h["@comment.warning"] = { link = "DiagnosticWarn" }
+  h["@comment.note"] = { link = "DiagnosticInfo" }
+  h["@markup.heading"] = { link = "Title" }
+  h["@markup.heading.1"] = { link = "Title" }
+  h["@markup.heading.2"] = { link = "Title" }
+  h["@markup.heading.3"] = { link = "Title" }
+  h["@markup.heading.4"] = { link = "Title" }
+  h["@markup.heading.5"] = { link = "Title" }
+  h["@markup.heading.6"] = { link = "Title" }
+  h["@markup.list.checked"] = { link = "DiagnosticOk" }
+  h["@diff.plus"] = { link = "Added" }
+  h["@diff.minus"] = { link = "Removed" }
+  h["@diff.delta"] = { link = "Changed" }
+  return h
+end

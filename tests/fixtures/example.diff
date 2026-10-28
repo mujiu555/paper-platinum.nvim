@@ -1,0 +1,7 @@
+diff --git a/page.lua b/page.lua
+--- a/page.lua
++++ b/page.lua
+@@ -1,2 +1,2 @@
+-local title = "Old"
++local title = "Platinum"
+ return title

@@ -1,0 +1,8 @@
+# Configuration rather than decoration
+workspace:
+  title: Platinum
+  width: 80
+  enabled: true
+  modes:
+    - light
+    - dark
