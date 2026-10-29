@@ -3,7 +3,7 @@ local paper = require('paper-platinum')
 paper.setup({
   style = 'light',
   transparent = false, -- set true to inherit your Kitty background
-  vivid = false, -- true: Tokyo Night red/yellow errors and warnings
+  vivid = false, -- true: full VS Code HC-inspired semantic colors
   terminal_colors = true,
   ui = { relief = 'subtle', contrast = 'normal', borders = true, float_style = 'platinum' },
   styles = { comments = { italic = true }, keywords = { bold = false }, functions = {}, variables = {} },
@@ -36,3 +36,8 @@ vim.keymap.set('n', '<leader>k', function() vim.lsp.buf.signature_help({ border 
 --   menu = { border = paper.border() }, documentation = { window = { border = paper.border() } },
 -- }, signature = { window = { border = paper.border() } } })
 -- require('lualine').setup({ options = { theme = 'paper-platinum' } })
+
+-- Contrast: low (legacy normal), normal (enhanced legacy high, default),
+-- reading (10/5/4), high (body 14, colored syntax 4.5, UI 8, comments 6): text / UI / comments.
+-- Transparent desktop backgrounds cannot be contrast-certified.
+-- reading + vivid: body 10:1; colorful syntax 4.5:1; UI 5:1; comments 4:1.

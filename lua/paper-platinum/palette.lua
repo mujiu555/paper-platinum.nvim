@@ -36,16 +36,17 @@ M.dark = {
 }
 function M.get(opts)
   local c = vim.deepcopy(M[opts.style])
-  if opts.vivid then
-    -- Bright Tokyo Night accents on charcoal; deeper saturated counterparts on paper.
-    -- Both pairs meet 4.5:1 on their editor, float and cursorline surfaces.
-    c.error = opts.style == "light" and "#c02636" or "#f7768e"
-    c.warning = opts.style == "light" and "#8c5e00" or "#e0af68"
-  end
+  require("paper-platinum.contrast").palette(c, opts)
   if opts.ui.contrast == "high" then
-    c.fg = opts.style == "light" and "#20211d" or "#eeecdf"
-    c.fg_muted = opts.style == "light" and "#53594e" or "#bac1ac"
-    c.border = opts.style == "light" and "#777c72" or "#929986"
+    -- Deliberately vivid, independently designed ink and luminous color palettes.
+    local accents = opts.style == "light" and {
+      blue = "#005fff", green = "#008c24", teal = "#009c92",
+      ochre = "#d47700", brick = "#ef2848", purple = "#bd20df",
+    } or {
+      blue = "#25ceff", green = "#91ff32", teal = "#00ffd0",
+      ochre = "#ffd62b", brick = "#ff7187", purple = "#f097ff",
+    }
+    for key, value in pairs(accents) do c[key] = value end
   end
   local aliases = {
     keyword = "purple", ["function"] = "blue", method = "blue", variable = "fg",
@@ -55,6 +56,26 @@ function M.get(opts)
     namespace = "teal", attribute = "purple", deprecated = "fg_muted",
   }
   for name, source in pairs(aliases) do c[name] = c[source] end
+  if opts.ui.contrast == "high" then
+    c.parameter, c.property = c.ochre, c.teal
+  end
+  if opts.ui.contrast == "normal" then
+    -- Legacy high surfaces and prose; deliberately separated semantic accents.
+    local accents = opts.style == "light" and {
+      blue = "#235c86", green = "#38652e", teal = "#17685f",
+      ochre = "#895914", brick = "#a53d31", purple = "#794b80",
+      parameter = "#79582f", property = "#32616d",
+    } or {
+      blue = "#98c6e5", green = "#b0cd8c", teal = "#86cebb",
+      ochre = "#e1b86b", brick = "#e4a088", purple = "#d0a4d5",
+      parameter = "#d0ba91", property = "#91c7cf",
+    }
+    for key, value in pairs(accents) do c[key] = value end
+    for name, source in pairs(aliases) do
+      if name ~= "parameter" and name ~= "property" then c[name] = c[source] end
+    end
+  end
+  if opts.vivid then require("paper-platinum.vivid")(c, opts) end
   if opts.on_colors then opts.on_colors(c) end
   return c
 end

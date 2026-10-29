@@ -54,11 +54,11 @@ vim.cmd.colorscheme('paper-platinum')
 require('paper-platinum').setup({
   style = 'dark',                 -- light | dark
   transparent = false,
-  vivid = false,                  -- 鲜艳的错误／警告强调色
+  vivid = false,                  -- 完整彩色语义方案
   terminal_colors = true,
   ui = {
     relief = 'subtle',            -- flat | subtle | classic
-    contrast = 'normal',          -- normal | high
+    contrast = 'normal',          -- low | normal | reading | high
     borders = true,
     float_style = 'platinum',     -- platinum | plain
   },
@@ -120,7 +120,7 @@ Light 与 Dark 分别定义，没有颜色反转。完整数据见 [palette.lua]
 
 变量使用正文色，参数和属性使用次要正文色，避免彩虹式语法。主文本对比度均超过 10:1；默认注释分别为 4.66:1 和 5.92:1（仅针对实体主题背景）。`contrast = 'high'` 加深／提亮正文、注释和边界，不增加饱和度。
 
-需要更鲜艳的错误与警告时，开启独立的 `vivid` 开关，可与透明和高对比正文组合：
+需要更丰富的语法与诊断颜色时，开启独立的 `vivid` 开关，可与透明和高对比正文组合：
 
 ```lua
 -- LazyVim 插件配置中的 opts：
@@ -132,9 +132,9 @@ opts = {
 }
 ```
 
-`vivid = true` 按模式选择鲜艳诊断色：Dark 使用 Tokyo Night 的亮红 `#f7768e` 和黄 `#e0af68`；Light 使用独立调深的饱和红 `#c02636` 和金黄 `#8c5e00`。作用于 Error/Warning 文本、sign、下划线、浮窗、Virtual Text/Lines 及继承这些语义的插件组。Info/Hint 保持克制。默认 `false` 保留原设计；关闭并重载即可恢复。语法、背景和 ANSI 调色板不变，`on_colors` / `on_highlights` 仍最后覆盖。
+`vivid = true` 启用完整彩色语义方案，覆盖语法、对象与全部诊断级别，参考 VS Code 高对比度主题。背景与 ANSI 调色板保持不变；`on_colors` / `on_highlights` 仍可覆盖。
 
-Light 和 Dark 均支持鲜艳模式，无需手动覆盖颜色。两套 Error/Warn 色在各自的实体主背景、浮窗与当前行背景上均达到 4.5:1；Light 的黄色偏深金黄，以保证浅底可读性。`ui.contrast = 'high'` 仍独立控制正文与边界。透明壁纸的最终合成对比度不能由实体色测试保证。Light 模式的块状光标使用鲜艳群青 `#003fba` 和浅色前景，与实体编辑区背景的对比度为 7.55:1。标准对比度比率最高为 21:1，因此 30–40:1 无法实现。
+Light 和 Dark 均支持完整鲜艳语义配色：变量、参数、属性、函数、方法、类型、接口、命名空间、字符串、数字、布尔值、注释及全部诊断级别分别着色。适用于四档 contrast；vivid=false 保留各档原配色。透明背景无法保证绝对对比度。
 
 ## 透明背景与 Kitty
 
@@ -182,7 +182,7 @@ Tree-sitter 使用现代 `@variable.parameter`、`@function.method`、`@markup.*
 
 Neovim 的 semantic token 层默认高于 Tree-sitter，modifier 和 typemod 再高一级、两级；主题不修改这些全局优先级。function、type、parameter 等 token 使用与语法相同的基础映射。宽泛的 variable、string、comment、keyword、operator、number、regexp token 设置为空，保留 Tree-sitter 的更精细捕获。deprecated 仅加删除线，readonly 仅加下划线，async 方法／函数仅加斜体，不另换一套颜色。没有 Tree-sitter 时，保留的传统 Vim 语法仍可提供底层颜色；关闭 LSP 集成后由 Neovim 默认行为接管。
 
-诊断分别定义普通文本、sign、virtual text/lines、下划线与浮窗组，含 `DiagnosticOk`。Error 使用波浪线，Info 使用直线，Hint 使用点线；终端不支持某种线型时可能退化。Virtual Text 默认使用可读的中性灰；vivid 模式的 Error/Warn 改用诊断色，不铺彩色背景。主题无法决定诊断图标与文本，请添加 E/W/I/H 前缀与符号以保留非颜色线索，示例已提供。不能把 `Ok` 当成 LSP 标准第五种诊断 severity，它是 Neovim 的成功提示高亮。
+诊断分别定义普通文本、sign、virtual text/lines、下划线与浮窗组，含 `DiagnosticOk`。Error 使用波浪线，Info 使用直线，Hint 使用点线；终端不支持某种线型时可能退化。Virtual Text 默认使用可读的中性灰；vivid 模式的全部级别改用各自诊断色，不铺彩色背景。主题无法决定诊断图标与文本，请添加 E/W/I/H 前缀与符号以保留非颜色线索，示例已提供。不能把 `Ok` 当成 LSP 标准第五种诊断 severity，它是 Neovim 的成功提示高亮。
 
 ## 插件支持范围
 
@@ -248,4 +248,89 @@ bash tests/capture.sh dark
 
 ## 许可证
 
-沿用仓库的 [Apache-2.0](LICENSE)。本实现独立设计；默认配色独立设计，vivid 的 Dark 模式按用户要求采用 Tokyo Night 的亮红／黄色，Light 则独立调整；没有引入其主题实现。
+沿用仓库的 [Apache-2.0](LICENSE)。本实现独立设计；vivid 参考 VS Code 官方高对比度主题的色彩语义，没有引入其主题实现。
+
+### 四档 Contrast API
+
+默认 `ui.contrast = 'normal'`。最低对比度（正文／交互 UI／注释）分别为：
+`low`: 旧版 normal（不强制最低比率），`normal`: 旧版 high 加强语法色（不强制最低比率），`reading`: 正文 10、vivid 彩色文字 4.5（关闭时为 10）／UI 5／注释 4，`high`: 正文 14、彩色语法 4.5／UI 8／注释 6。
+以上新规范取代前文旧版固定颜色与比率描述。状态栏等 UI 中的文字、诊断文字
+采用正文标准。校正使用 WCAG sRGB 线性化公式，不增加饱和度；必要时调整背景。
+独立 Light／Dark 调色板和原配置结构保留。最终 `on_highlights` 覆盖可以改变保证。
+透明桌面背景未知，不能保证绝对对比度；混合窗口也需按最终合成结果测量。
+
+运行 `nvim --headless -i NONE -u NONE -l tests/contrast.lua` 生成
+`doc/contrast-report.csv`，未知背景记为 `UNVERIFIABLE`。
+
+`low` 完整保留旧版 normal；默认 `normal` 保留旧版 high 的正文、注释、背景和边界，并增强语法颜色，为参数、属性提供独立色彩。Tree-sitter 与 LSP 共用语义颜色。数值最低对比度保证仅适用于 reading、high。
+
+
+
+High 改为鲜明彩色语法：蓝色函数、绿色字符串、青色类型／属性、紫色关键字、
+金色数字／参数。正文最低 14:1，彩色文字最低 4.5:1，UI／注释仍为 8:1／6:1。
+选择 high 即启用强彩色语法，不依赖 vivid；vivid 启用另一套更丰富的彩色语义方案。
+Light 使用深彩色墨水，Dark 使用明亮彩色，避免统一压成黑白。
+`tests/high_color.lua` 验证色彩差异与正文对比度。
+
+
+### 完整 vivid 语义配色
+
+参考 VS Code 官方 [Dark High Contrast](https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/hc_black.json)
+和 [Light High Contrast](https://github.com/microsoft/vscode/blob/main/extensions/theme-defaults/themes/hc_light.json)
+的色彩语义，按本主题背景重新调色，并非逐色复制。
+vivid 不再局限于诊断红黄：函数／方法使用黄／金，类型／接口使用青／绿，
+变量／属性使用蓝／青蓝，参数橙色、关键字品红、字符串珊瑚色、数字绿色、
+命名空间紫色；Light 独立使用深彩色墨水。诊断虚拟文本保留各级语义颜色。
+正文与背景保持稳定，reading/high 仍执行各自的对比度校正。
+`tests/vivid.lua` 验证八种模式／背景组合校正后仍有 17 种语义颜色，
+并验证 Tree-sitter／LSP 映射一致。通用 LSP variable 不覆盖更细的 Tree-sitter 分类。
+旧版 low 的完全一致性仅适用于 vivid=false。
+
+
+`reading + vivid` 保留正文 10:1 和原有背景，彩色文字改为最低 4.5:1，
+避免被压成灰黑／近白。注释与 UI 仍为 4:1／5:1。测试的 17 种语义颜色
+全部保持独立，Tree-sitter／LSP 共用这些颜色。本次不改变 low、normal、high
+及关闭 vivid 的 reading。
+
+<!-- contrast-matrix:start -->
+## Contrast measurements / 对比度实测
+
+Executed 6912 configurations; 30963072 known-background comparisons; 2875968 unknown-background observations (UNVERIFIABLE).
+
+WCAG sRGB linearization. Matrix: 4 modes × 2 styles × 3 reliefs × 2 float styles × vivid on/off × borders on/off × terminal colors on/off × 18 transparency settings (false, true, all 16 surface masks). Default integrations enabled; callbacks and custom styles excluded. winblend/pumblend = 0.
+
+Foreground links are resolved by Neovim. Inherited foregrounds are conservatively compared against editor, float, menu, cursorline, visual, diff, search and status surfaces; these ranges are a stress audit, not proof of every plugin rendering combination. Transparent unknown surfaces are never certified. Disabled borders and decorative whitespace are excluded from UI minima. Low/normal are measured, not threshold-certified.
+
+| Mode | Style | Text range | Comments range | UI range |
+| --- | --- | ---: | ---: | ---: |
+| low | light | 1.63–12.59 | 1.63–5.09 | 1.08–3.72 |
+| low | dark | 1.26–12.46 | 1.26–7.29 | 1.16–4.22 |
+| normal | light | 2.04–14.09 | 2.83–6.29 | 1.08–3.72 |
+| normal | dark | 1.45–12.46 | 2.24–7.87 | 1.16–4.95 |
+| reading | light | 4.50–13.26 | 4.00–5.33 | 5.00–6.66 |
+| reading | dark | 4.50–12.46 | 4.00–7.29 | 5.00–5.88 |
+| high | light | 4.50–14.76 | 6.02–6.34 | 8.01–8.47 |
+| high | dark | 4.54–15.07 | 6.05–8.81 | 8.01–8.13 |
+
+### Semantic objects: low → normal / 语义对象对照
+
+Default opaque editor background. Each cell: foreground / contrast ratio. LSP generic variable/string/comment tokens stay additive and inherit Tree-sitter; they must not overwrite finer captures.
+
+| Highlight | Light low | Light normal | Dark low | Dark normal |
+| --- | --- | --- | --- | --- |
+| Normal | #292a25 / 12.59 | #20211d / 14.09 | #dedbcf / 10.53 | #eeecdf / 12.31 |
+| @variable | #292a25 / 12.59 | #20211d / 14.09 | #dedbcf / 10.53 | #eeecdf / 12.31 |
+| @variable.parameter | #42443d / 8.60 | #79582f / 5.62 | #c0c1b4 / 8.02 | #d0ba91 / 7.73 |
+| @variable.member | #42443d / 8.60 | #32616d / 5.96 | #c0c1b4 / 8.02 | #91c7cf / 7.84 |
+| @type | #366762 / 5.58 | #17685f / 5.74 | #9ebfb3 / 7.34 | #86cebb / 8.04 |
+| @function | #315d78 / 6.16 | #235c86 / 6.20 | #a4bdcc / 7.46 | #98c6e5 / 8.03 |
+| @keyword | #70566f / 5.62 | #794b80 / 5.84 | #c2aac1 / 6.82 | #d0a4d5 / 6.92 |
+| @string | #4b6547 / 5.62 | #38652e / 5.95 | #b1c19a / 7.62 | #b0cd8c / 8.31 |
+| @comment | #696c63 / 4.66 | #53594e / 6.29 | #a2a797 / 5.92 | #bac1ac / 7.87 |
+| @lsp.type.class | #366762 / 5.58 | #17685f / 5.74 | #9ebfb3 / 7.34 | #86cebb / 8.04 |
+| @lsp.type.property | #42443d / 8.60 | #32616d / 5.96 | #c0c1b4 / 8.02 | #91c7cf / 7.84 |
+| @lsp.type.parameter | #42443d / 8.60 | #79582f / 5.62 | #c0c1b4 / 8.02 | #d0ba91 / 7.73 |
+| @lsp.type.function | #315d78 / 6.16 | #235c86 / 6.20 | #a4bdcc / 7.46 | #98c6e5 / 8.03 |
+
+Full per-configuration category ranges: [contrast-matrix.csv](doc/contrast-matrix.csv). Reproduce: `nvim --headless -i NONE -u NONE -l tests/contrast_matrix.lua`.
+<!-- contrast-matrix:end -->

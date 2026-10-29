@@ -29,7 +29,7 @@ function M.resolve(opts)
   local c = vim.tbl_deep_extend("force", vim.deepcopy(M.defaults), opts or {})
   choice(c.style, { "light", "dark" }, "style")
   choice(c.ui.relief, { "flat", "subtle", "classic" }, "ui.relief")
-  choice(c.ui.contrast, { "normal", "high" }, "ui.contrast")
+  choice(c.ui.contrast, { "low", "normal", "reading", "high" }, "ui.contrast")
   choice(c.ui.float_style, { "platinum", "plain" }, "ui.float_style")
   for _, k in ipairs({ "transparent", "vivid", "terminal_colors" }) do
     if k ~= "transparent" then assert(type(c[k]) == "boolean", "paper-platinum: " .. k .. " must be boolean") end

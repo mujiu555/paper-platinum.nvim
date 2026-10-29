@@ -12,6 +12,7 @@ function M.highlights(opts)
     end
   end
   h = vim.tbl_extend("force", h, require("paper-platinum.integrations").get(c, o))
+  require("paper-platinum.contrast").apply(h, c, o)
   if o.on_highlights then o.on_highlights(h, c) end
   return h, c, o
 end

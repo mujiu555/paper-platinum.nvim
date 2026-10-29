@@ -10,9 +10,10 @@ local function run()
       local b = vim.api.nvim_create_buf(false, true)
       vim.api.nvim_buf_set_lines(b, 0, -1, false, vim.fn.readfile('tests/fixtures/example.' .. ext))
       local ok, parser = pcall(vim.treesitter.get_parser, b, lang)
-      local query = ok and vim.treesitter.query.get(lang, 'highlights')
-      if not ok or not query then
-        print('SKIP ' .. style .. '/' .. lang .. ': parser or query unavailable')
+      local query_ok, query = false, nil
+      if ok then query_ok, query = pcall(vim.treesitter.query.get, lang, 'highlights') end
+      if not ok or not query_ok or not query then
+        print('SKIP ' .. style .. '/' .. lang .. ': parser/query unavailable or incompatible: ' .. tostring(query))
         skipped = skipped + 1
       else
         local n = 0
